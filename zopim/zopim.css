@@ -1,0 +1,32 @@
+body {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.navbar {
+  margin-bottom: 20px;
+}
+
+input {
+    margin-bottom: 10px !important;
+}
+
+.top {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10000;
+}
+
+#myModal {
+    z-index: 10100;
+}
+
+.container {
+    margin-top: 40px;
+}
+
+#inner-message {
+    text-align: center;
+    vertical-align: middle;
+}
