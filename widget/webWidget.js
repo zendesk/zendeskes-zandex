@@ -1,6 +1,9 @@
-  $(window).load(function() {
-      $('#myModal').modal('show');
-  });
+$(window).load(function() {
+    $('#myModal').modal('show');
+    $(".btn-group > .btn").click(function() {
+        $(this).addClass("active").siblings().removeClass("active");
+    });
+});
 
   function compileWidget(subdomain,locale) {
       var zdSubdomain = subdomain;
@@ -8,10 +11,33 @@
       console.log("This is a Web Widget for: " + zdSubdomain + locale);
       $('#inner-message').text("Assuming Web Widget for: " + zdSubdomain);
 
+      if ($('#myModal :button.active').val() === 'true') generateJWTToken();
+
       /*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(c){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var o=this.createElement("script");n&&(this.domain=n),o.id="js-iframe-async",o.src=e,this.t=+new Date,this.zendeskHost=t,this.zEQueue=a,this.body.appendChild(o)},o.write('<body onload="document._l();">'),o.close()}("https://assets.zendesk.com/embeddable_framework/main.js",zdSubdomain);
       /*]]>*/
 
       zEsinatra(locale);
+  }
+
+  function generateJWTToken(){
+    payload = {
+      name: $('#customerName').val() || 'Customer',
+      email: $('#customerEmail').val() || 'customer@example.com',
+      iat: Math.floor(Date.now() / 1000),
+      jti:  Math.floor(Math.random() * 100000000000000000)
+    }
+    sharedSecret = $('#sharedSecret').val() || '5c41f0c19b5740e40ceba2ee8952b51b';
+    jwtToken = KJUR.jws.JWS.sign(null, '{"typ":"JWT", "alg":"HS256"}', payload, {"utf8": sharedSecret});
+
+    console.log('Shared Secret: ', sharedSecret)
+    console.log('Payload: ', payload)
+    console.log('JWT TOKEN: ', jwtToken);
+
+    window.zESettings = {
+        authenticate: {
+            jwt: jwtToken
+        }
+    };
   }
 
   function zEsinatra(locale) {

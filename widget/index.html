@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="http://kjur.github.io/jsrsasign/jsrsasign-latest-all-min.js"></script>
     <script src="webWidget.js"></script>
 </head>
 
@@ -32,12 +33,32 @@
                 </div>
                 <div class="modal-body">
                     <p>Subdomain:</p>
-                    <form class="form-horizontal" id="subdomainForm">
+                    <form class="form-horizontal" id="subdomainForm" role="form" data-toggle="validator">
                         <!-- <div class="span4"> -->
-                        <input type="text" class="form-control" placeholder="acmeinc" id="subdomain" autofocus>
+                        <input type="text" class="form-control" placeholder="acmeinc" id="subdomain" autofocus required>
                         <p>Locale: (optional)</p>
                         <input type="text" class="form-control" placeholder="de" id="zeLocale">
-                        <button type="submit" class="btn btn-default" data-dismiss="modal" value="Submit" onclick="compileWidget(document.getElementById('subdomain').value, document.getElementById('zeLocale').value)">Submit</button>
+                        <p>Restricted Help Center: </p>
+                        <div class="btn-group" role="group">
+                            <button type="button" value="true" class="btn btn-info" data-toggle="collapse" data-target="#restricted_hc_info">YES</button>
+                            <button type="button" value="false" class="btn btn-info active" data-toggle="collapse" data-target="#restricted_hc_info">NO</button>
+                        </div>
+                        <div class="panel-group" id="accordion">
+                            <div id="restricted_hc_info" class="panel panel-info collapse">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Restricted Help Center Config:</h3>
+                                </div>
+                                <div class="panel-body panel-collapse">
+                                    <label class="control-label">Customer Name:</label>
+                                    <input type="text" class="form-control" placeholder="Customer" id="customerName" required>
+                                    <p>Customer Email:</p>
+                                    <input type="text" class="form-control" placeholder="customer@example.com" id="customerEmail" required>
+                                    <p>Shared Secret:</p>
+                                    <input type="text" class="form-control" placeholder="195512a62cfe30a9d8316bedac2d0361" id="sharedSecret" required>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-block" data-dismiss="modal" value="Submit" onclick="compileWidget(document.getElementById('subdomain').value, document.getElementById('zeLocale').value)">Submit</button>
                         <!-- </div> -->
                     </form>
                 </div>
@@ -59,7 +80,8 @@
         <div class="row-fluid">
             <div class="col-md-6">
                 <div class="alert alert-info">
-                    The following form helps simulate the <a href='https://developer.zendesk.com/embeddables/docs/widget/api#ze.identify'>zE.identify</a> API functionality for the Zendesk Web Widget. Simply fill out the form and click on the Submit button to populate the Widget
+                    The following form helps simulate the <a href='https://developer.zendesk.com/embeddables/docs/widget/api#ze.identify'>zE.identify</a> API functionality for the Zendesk Web Widget. Simply fill out the form and click on the Submit button
+                    to populate the Widget
                 </div>
                 <form class="form-signin" onsubmit="return false;">
                     <div class="form-group">
