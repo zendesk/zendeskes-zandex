@@ -1,9 +1,31 @@
 $(window).load(function() {
     $('#myModal').modal('show');
-    $(".btn-group > .btn").click(function() {
+
+    $("div#myModal").on('click', '.btn-group > .btn.active', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    });
+
+    $("div#myModal").on('click', '.btn-group > .btn', function(e) {
         $(this).addClass("active").siblings().removeClass("active");
+        if ($(this).val() === 'true') {
+            $('#restricted_hc_info input').attr('data-validate', 'true');
+        } else {
+            $('#restricted_hc_info input').attr('data-validate', 'false');
+        }
+        $('#myModal').validator('update');
+    });
+
+    $('#form').validator().on('submit', function(e) {
+        if (!e.isDefaultPrevented()) {
+            e.preventDefault();
+            $('#myModal').modal('hide');
+            compileWidget($('#subdomain').val(), $('#zeLocale').val());
+        }
     });
 });
+
+
 
   function compileWidget(subdomain,locale) {
       var zdSubdomain = subdomain;
@@ -21,16 +43,16 @@ $(window).load(function() {
 
   function generateJWTToken(){
     payload = {
-      name: $('#customerName').val() || 'Customer',
-      email: $('#customerEmail').val() || 'customer@example.com',
+      name: $('#customerName').val(),
+      email: $('#customerEmail').val(),
       iat: Math.floor(Date.now() / 1000),
       jti:  Math.floor(Math.random() * 100000000000000000)
-    }
-    sharedSecret = $('#sharedSecret').val() || '5c41f0c19b5740e40ceba2ee8952b51b';
+    };
+    sharedSecret = $('#sharedSecret').val();
     jwtToken = KJUR.jws.JWS.sign(null, '{"typ":"JWT", "alg":"HS256"}', payload, {"utf8": sharedSecret});
 
-    console.log('Shared Secret: ', sharedSecret)
-    console.log('Payload: ', payload)
+    console.log('Shared Secret: ', sharedSecret);
+    console.log('Payload: ', payload);
     console.log('JWT TOKEN: ', jwtToken);
 
     window.zESettings = {

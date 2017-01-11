@@ -142,6 +142,11 @@ body {
     border-top-right-radius: 0;
 }
 
+.form-group.required .control-label:after {
+  content:"*";
+  color:red;
+}
+
 input {
     margin-bottom: 10px !important;
 }
