@@ -69,11 +69,12 @@ function generateJWTToken() {
 }
 
 function zE_setup(locale) {
+    var hide = false || window.location.search==="?hide"
     locale = locale || "en-US";
     console.log('Locale Set To:', locale);
     zE(function() {
         zE.setLocale(locale);
-        zE.show();
+        if (hide) zE.hide();
     });
     $('#inner-message').slideToggle(1200, 'linear');
     var URL = window.location.href;
