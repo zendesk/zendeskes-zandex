@@ -20,7 +20,7 @@ $(window).load(function() {
         if (!e.isDefaultPrevented()) {
             e.preventDefault();
             $('#configModal').modal('hide');
-            zE_compile($('#subdomain').val(), $('#locale').val());
+            zE_compile($('#subdomain').val().trim(), $('#locale').val().trim());
         }
     });
 });
@@ -53,12 +53,12 @@ function zE_authenticate(argument) {
 
 function generateJWTToken() {
     payload = {
-        name: $('#customerName').val(),
-        email: $('#customerEmail').val(),
+        name: $('#customerName').val().trim(),
+        email: $('#customerEmail').val().trim(),
         iat: Math.floor(Date.now() / 1000),
         jti: Math.floor(Math.random() * 100000000000000000)
     };
-    sharedSecret = $('#sharedSecret').val();
+    sharedSecret = $('#sharedSecret').val().trim();
     jwtToken = KJUR.jws.JWS.sign(null, '{"typ":"JWT", "alg":"HS256"}', payload, { "utf8": sharedSecret });
 
     console.log('Shared Secret:', sharedSecret);
@@ -83,8 +83,8 @@ function zE_setup(locale) {
 function zE_identify() {
     zE.activate();
     zE.identify({
-        name: $('#inputName').val(),
-        email: $('#inputEmail').val(),
-        organization: $('#inputOrganization').val(),
+        name: $('#inputName').val().trim(),
+        email: $('#inputEmail').val().trim(),
+        organization: $('#inputOrganization').val().trim(),
     });
 }
